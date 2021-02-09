@@ -118,9 +118,10 @@
 
 <script>
 export default {
-  name: "JobCategoryAdd",
+  name: "JobCategoryEdit",
   props: {
-    open: Boolean
+    open: Boolean,
+    categoryId: Number,
   },
   data: () => ({
     dialogLoading: false,
@@ -130,12 +131,12 @@ export default {
   }),
   methods: {
     changeAddForm() {
-      this.$emit('changeJobAddForm');
+      this.$emit('changeJobEditForm');
     },
     handleAddForm() {
       this.formErrors = [];
       this.loginLoading = true;
-      this.$axios.post("/job-categories", this.job_category).then(res => {
+      this.$axios.put("/job-categories/" + this.categoryId, this.job_category).then(res => {
         this.loginLoading = false;
         this.changeAddForm();
         this.$toasted.success("Başarıyla eklendi", {
@@ -194,7 +195,20 @@ export default {
           }, 500);
         }
       })
-    },
+    }
+  },
+  created() {
+    this.$axios.get("/job-categories/" + this.categoryId).then(res => {
+      this.job_category = res.data;
+    }).catch(err => {
+      this.$toasted.error(err.response.data.message, {
+        theme: "toasted-primary",
+        position: "top-center",
+        icon: 'warning',
+        iconPack: "material",
+        duration: 5000
+      });
+    });
   }
 }
 </script>

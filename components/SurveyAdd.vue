@@ -157,6 +157,7 @@ export default {
           iconPack: "material",
           duration: 5000
         });
+        this.survey = {};
         this.$emit('refreshSurveys');
       }).catch(err => {
         this.loginLoading = false;

@@ -30,7 +30,7 @@
               <div class="relative w-screen max-w-5xl">
                 <div class="absolute top-0 left-0 -ml-8 pt-4 pr-2 flex sm:-ml-10 sm:pr-4">
                   <button
-                    @click="changeAddForm"
+                    @click="changeUserAddForm"
                     class="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
                     <span class="sr-only">Close panel</span>
                     <!-- Heroicon name: x -->
@@ -44,7 +44,7 @@
                   <div class="px-4 sm:px-6  md:px-12 flex flex-row justify-between items-center">
                     <div class="flex flex-col">
                       <h2 id="slide-over-heading-2" class="text-xl font-medium text-gray-900 mb-2">
-                        Yeni İş Kategori Ekle
+                        Yeni Fakülte Ekle
                       </h2>
                     </div>
                     <div class="flex">
@@ -54,48 +54,42 @@
                   <div class="mt-6 relative flex-1 px-4 md:px-12 sm:px-6 z-30">
                     <!-- Replace with your content -->
                     <div>
-                      <div class="md:grid md:grid-cols-3 md:gap-6">
-                        <div class="md:col-span-1">
-                          <div class="px-4 sm:px-0">
-                            <h3 class="text-lg font-medium leading-6 text-gray-900">İş Kategori Ekleyin</h3>
-                          </div>
-                        </div>
-                        <div class="mt-5 md:mt-0 md:col-span-2">
-                          <form action="#" method="POST" @submit.prevent="handleAddForm">
-                            <div class="shadow overflow-hidden sm:rounded-md">
-                              <div class="px-4 py-5 bg-white sm:p-6">
-                                <div class="text-white px-6 py-4 border-0 rounded relative mb-4 bg-red-500"
-                                     v-for="formError in formErrors"
-                                     :key="formError.id">
+                      <div class="mt-5 md:mt-0 md:col-span-2 min-h-full">
+                        <form action="#" method="POST" @submit.prevent="handleAddForm">
+                          <div class="shadow overflow-hidden sm:rounded-md">
+                            <div class="px-4 py-5 bg-white sm:p-6">
+                              <div class="text-white px-6 py-4 border-0 rounded relative mb-4 bg-red-500"
+                                   v-for="formError in formErrors"
+                                   :key="formError.id">
                                   <span class="text-xl inline-block mr-5 align-middle">
-                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                         viewBox="0 0 24 24"
                                          stroke="currentColor">
                                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                                     </svg>
                                   </span>
-                                  <span class="inline-block align-middle mr-8">
-                                    <b class="capitalize">Hata</b> {{ formError.field + " " + formError.message }}
+                                <span class="inline-block align-middle mr-8">
+                                    <b class="capitalize">Hata</b> {{ formError.message }}
                                   </span>
-                                </div>
-                                <div class="grid grid-cols-6 gap-6">
-                                  <div class="col-span-6 sm:col-span-3">
-                                    <label for="name" class="block text-sm font-medium text-gray-700">Ad</label>
-                                    <input type="text" name="name" id="name" v-model="job_category.name"
-                                           class="border mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                  </div>
-                                </div>
                               </div>
-                              <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                                <button type="submit"
-                                        :class="{'btn-loading':loginLoading}"
-                                        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                  Kaydet
-                                </button>
+                              <div class="grid grid-cols-6 gap-6 mb-5">
+                                <div class="col-span-6">
+                                  <label for="name" class="block text-sm font-medium text-gray-700">Ad</label>
+                                  <input type="text" name="name" id="name" v-model="faculty.name"
+                                         class="border mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
                               </div>
                             </div>
-                          </form>
-                        </div>
+                            <div class="px-4 py-3 bg-gray-50 text-right sm:px-6 pt-40">
+                              <button type="submit"
+                                      :class="{'btn-loading':loginLoading}"
+                                      class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Kaydet
+                              </button>
+                            </div>
+                          </div>
+                        </form>
                       </div>
                     </div>
 
@@ -118,26 +112,25 @@
 
 <script>
 export default {
-  name: "JobCategoryAdd",
+  name: "FacultyAdd",
   props: {
     open: Boolean
   },
   data: () => ({
     dialogLoading: false,
     loginLoading: false,
-    job_category: {},
+    faculty: {},
     formErrors: [],
   }),
   methods: {
-    changeAddForm() {
-      this.$emit('changeJobAddForm');
+    changeUserAddForm() {
+      this.$emit('changeFacultyAddForm');
     },
     handleAddForm() {
       this.formErrors = [];
       this.loginLoading = true;
-      this.$axios.post("/job-categories", this.job_category).then(res => {
+      this.$axios.post("/faculties", this.faculty).then(res => {
         this.loginLoading = false;
-        this.changeAddForm();
         this.$toasted.success("Başarıyla eklendi", {
           theme: "toasted-primary",
           position: "top-center",
@@ -145,56 +138,42 @@ export default {
           iconPack: "material",
           duration: 5000
         });
-        this.$emit('refreshJobCategories');
+        this.$emit('refreshFaculties');
+        this.$emit('changeFacultyAddForm')
       }).catch(err => {
         this.loginLoading = false;
         this.formErrors = [];
-        if (!err.response) {
-          this.$toasted.error("Bilinmeyen bir hata oluştu", {
-            theme: "toasted-primary",
-            position: "top-center",
-            icon: 'warning',
-            iconPack: "material",
-            duration: 5000
-          });
-        } else {
-          if (typeof err.response.data.message !== "undefined") {
-            this.formErrors.push({
-              id: 99,
-              field: "login",
-              message: err.response.data.message
-            });
-            return;
-          }
-          let errData = err.response.data.apierror;
-          this.$toasted.error(errData.message, {
-            theme: "toasted-primary",
-            position: "top-center",
-            icon: 'warning',
-            iconPack: "material",
-            duration: 5000
-          });
+        if (typeof err.response.data.message !== "undefined") {
           this.formErrors.push({
             id: 99,
             field: "login",
-            message: errData.message
+            message: err.response.data.message
           });
-          if (errData.subErrors) {
-            let errors = errData.subErrors;
-            errors.forEach((v, i) => {
-              this.formErrors.push({
-                id: i,
-                field: v.field,
-                message: v.message
-              });
-            });
-          }
-          setTimeout(() => {
-            this.loginLoading = false;
-          }, 500);
+          return;
         }
+        let errData = err.response.data.apierror;
+        this.$toasted.error(errData.message, {
+          theme: "toasted-primary",
+          position: "top-center",
+          icon: 'warning',
+          iconPack: "material",
+          duration: 5000
+        });
+        if (errData.subErrors) {
+          let errors = errData.subErrors;
+          errors.forEach((v, i) => {
+            this.formErrors.push({
+              id: i,
+              field: v.field,
+              message: v.message
+            });
+          });
+        }
+        setTimeout(() => {
+          this.loginLoading = false;
+        }, 500);
       })
-    },
+    }
   }
 }
 </script>

@@ -33,10 +33,6 @@
             </div>
             <div class="hidden sm:block sm:ml-6">
               <div class="flex space-x-4">
-                <NuxtLink to="/" exact
-                          class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  Panel
-                </NuxtLink>
                 <NuxtLink to="/jobs"
                           class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                   İşler
@@ -74,7 +70,7 @@
                         id="user-menu" aria-haspopup="true">
                   <span class="sr-only">Open user menu</span>
                   <img class="h-8 w-8 rounded-full"
-                       :src="$auth.user.profileImage === null ? `https://via.placeholder.com/64` : $auth.user.profileImage"
+                       :src="$auth.user.profileImage === null ? `https://via.placeholder.com/64` : (siteURL + `files/` +$auth.user.profileImage)"
                        alt="">
                 </button>
               </div>
@@ -89,6 +85,10 @@
                 <div v-show="isShowProfile"
                      class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-20"
                      role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+                  <NuxtLink active-class="" exact-active-class="" to="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                    Profil</NuxtLink>
+                  <NuxtLink active-class="" exact-active-class="" to="/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                     role="menuitem">Ayarlar</NuxtLink>
                   <a href="#" @click="logoutUser" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Çıkış Yap</a>
                 </div>
               </transition>
@@ -103,10 +103,31 @@
         Menu open: "block", Menu closed: "hidden"
       -->
       <div :class="openMobileMenu ? 'block' : 'hidden'" class="sm:hidden">
-        <div class="px-2 pt-2 pb-3 space-y-1">
-          <NuxtLink to="/" exact
+        <div class="px-2 pt-2 pb-3 space-y-3 flex flex-col">
+          <NuxtLink to="/jobs"
                     class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-            Panel
+            İşler
+          </NuxtLink>
+          <NuxtLink to="/surveys"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+            Anketler
+          </NuxtLink>
+          <NuxtLink to="/my-jobs"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+            İş İlanlarım
+          </NuxtLink>
+          <NuxtLink to="/applied-jobs"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+            İş Başvurularım
+          </NuxtLink>
+          <NuxtLink to="/graduates"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+            Mezunlar
+          </NuxtLink>
+          <NuxtLink to="/admin"
+                    v-if="$auth.user.role === 'ADMIN'"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+            Yönetim
           </NuxtLink>
         </div>
       </div>
@@ -116,15 +137,18 @@
 </template>
 <script>
 export default {
-  data: () => ({
-    isShowProfile: false,
-    openMobileMenu: false
-  }),
+  data() {
+    return {
+      isShowProfile: false,
+      openMobileMenu: false,
+      siteURL: process.env.siteURL,
+    }
+  },
   methods: {
     async logoutUser() {
       await this.$auth.logout();
       this.$router.push("/login");
-    }
-  }
+    },
+  },
 }
 </script>

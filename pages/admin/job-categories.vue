@@ -1,7 +1,7 @@
 <template>
   <div>
-    <JobAdd :open="isOpenForm" @changeJobAddForm="isOpenForm = false" @refreshJobs="refreshJobs"/>
-    <JobEdit :job-id="selectedJobId" v-if="isOpenEditForm" :open="isOpenEditForm" @changeJobEditForm="isOpenEditForm=false" @refreshJobs="refreshJobs"/>
+    <JobCategoryAdd :open="isOpenForm" @changeJobAddForm="isOpenForm = false" @refreshJobCategories="refreshJobCategories"/>
+    <JobCategoryEdit :category-id="selectedCategoryId" v-if="isOpenEditForm" :open="isOpenEditForm" @changeJobEditForm="isOpenEditForm=false" @refreshJobCategories="refreshJobCategories"/>
     <div class="lg:px-20 py-10 h-full">
       <div class="flex flex-col">
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -41,8 +41,8 @@
                     {{ $moment(category.created_at).format("DD-MM-YYYY hh:mm:ss") }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <a href="javascript:void(0)" @click="selectedJobId=category.id; isOpenEditForm=true" class="text-gray-300 hover:text-white bg-green-600 py-2 px-4 rounded-lg">Düzenle</a>
-                    <a href="javascript:void(0)" @click="deleteJob(category.id)" class="text-gray-300 hover:text-white bg-red-600 py-2 px-4 rounded-lg">Sil</a>
+                    <a href="javascript:void(0)" @click="selectedCategoryId=category.id; isOpenEditForm=true" class="text-gray-300 hover:text-white bg-green-600 py-2 px-4 rounded-lg">Düzenle</a>
+                    <a href="javascript:void(0)" @click="deleteJobCategory(category.id)" class="text-gray-300 hover:text-white bg-red-600 py-2 px-4 rounded-lg">Sil</a>
                   </td>
                 </tr>
 
@@ -63,13 +63,13 @@ export default {
   name: "admin-job-categories",
   data: () => ({
     jobCategories: [],
-    selectedJobId: 0,
+    selectedCategoryId: 0,
     isOpenEditForm: false,
     isOpenForm: false,
   }),
   methods: {
     refreshJobCategories() {
-      this.$axios.get("/jobs-categories").then(res => {
+      this.$axios.get("/job-categories").then(res => {
         this.jobCategories = res.data;
       }).catch(err => {
         this.$toasted.error(err.response.data.message, {
@@ -81,8 +81,8 @@ export default {
         });
       })
     },
-    deleteJob(jobId) {
-      this.$axios.delete("/jobs/" + jobId).then(res => {
+    deleteJobCategory(categoryId) {
+      this.$axios.delete("/job-categories/" + categoryId).then(res => {
         this.$toasted.success("Başarıyla silindi!", {
           theme: "toasted-primary",
           position: "top-center",
@@ -90,7 +90,7 @@ export default {
           iconPack: "material",
           duration: 5000
         });
-        this.refreshJobs();
+        this.refreshJobCategories();
       }).catch(err => {
         if (!err.response) {
           this.$toasted.error("Bilinmeyen bir hata oluştu", {

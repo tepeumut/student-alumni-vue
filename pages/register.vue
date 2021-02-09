@@ -45,10 +45,6 @@
           <span class="inline-block align-middle mr-8">
             <b class="capitalize">Başarılı!</b> {{ formSuccess.message }}
           </span>
-          <button
-            class="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none">
-            <span>×</span>
-          </button>
         </div>
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
@@ -77,6 +73,7 @@
             <label for="phone" class="sr-only">Telefon</label>
             <input id="phone" name="password" type="text"
                    v-model="register.phone"
+                   v-mask="'+90 ### ### ## ##'"
                    required
                    class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                    placeholder="Telefon +90......">
@@ -97,11 +94,8 @@
                    placeholder="Soyad">
           </div>
           <div>
-            <label for="graduationDate" class="sr-only">Mezuniyet Tarihi</label>
-            <input id="graduationDate" name="graduationDate" type="date" v-model="register.graduationDate"
-                   required
-                   class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                   placeholder="Soyad">
+            <label class="sr-only">Mezuniyet Tarihi</label>
+            <datepicker placeholder="Mezuniyet Tarihi" :language="datePickerLang" v-model="register.graduationDate" name="uniquename" input-class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"></datepicker>
             </div>
             <div>
             <label for="role" class="sr-only">Tür</label>
@@ -135,11 +129,17 @@
   </div>
 </template>
 <script>
+import Datepicker from 'vuejs-datepicker';
+import {tr} from 'vuejs-datepicker/dist/locale'
 export default {
   layout: 'login',
   name: "register",
   auth: false,
+  components: {
+    Datepicker
+  },
   data: () => ({
+    datePickerLang: tr,
     register: {},
     formErrors: [],
     formSuccess: {
@@ -185,11 +185,6 @@ export default {
             iconPack: "material",
             duration: 5000
           });
-          this.formErrors.push({
-            id: 99,
-            field: "login",
-            message: errData.message
-          });
           if (errData.subErrors) {
             let errors = errData.subErrors;
             errors.forEach((v, i) => {
@@ -206,6 +201,10 @@ export default {
         }
       })
     },
+  },
+  async created() {
+    this.register.role = "USER"
+    this.$auth.logout();
   }
 }
 </script>

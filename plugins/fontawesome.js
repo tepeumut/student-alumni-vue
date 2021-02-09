@@ -12,3 +12,7 @@ library.add(fas)
 library.add(fab)
 // Register the component globally
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+
+import { VueMaskDirective } from 'v-mask'
+Vue.directive('mask', VueMaskDirective);

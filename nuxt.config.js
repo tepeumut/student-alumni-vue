@@ -37,7 +37,8 @@ export default {
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
     'nuxt-material-design-icons',
-    '@nuxtjs/moment'
+    '@nuxtjs/moment',
+    '@nuxtjs/dotenv'
   ],
 
   moment: {
@@ -55,7 +56,12 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    baseURL: "https://student-alumni-spring.herokuapp.com"
+    baseURL: "http://localhost:8080/"
+  },
+
+  // Env
+  env: {
+    siteURL: "http://localhost:8080/"
   },
 
   // Router

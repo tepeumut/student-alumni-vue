@@ -154,7 +154,7 @@ export default {
     this.$axios.get("actuator/health").then(d => {
       let data = d.data;
       if (data.status === 'DOWN') {
-        this.$toasted.error("Sunucu hatası!", {
+        this.$toasted.error("Server is down!", {
           theme: "toasted-primary",
           position: "top-center",
           icon: 'warning',
@@ -171,18 +171,6 @@ export default {
         duration: 5000
       });
     })
-    /*this.$stompClient.connect({}, function (frame) {
-      this.$stompClient.subscribe('/topic/greetings', (res) => {
-        let content = JSON.parse(res.body).content;
-        this.$toasted.success(content, {
-          theme: "toasted-primary",
-          position: "top-center",
-          icon: 'check',
-          iconPack: "material",
-          duration: 5000
-        });
-      });
-    }.bind(this));*/
   }
 }
 </script>

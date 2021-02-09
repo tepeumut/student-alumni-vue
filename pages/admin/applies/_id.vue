@@ -121,7 +121,7 @@
                                         </span>
                                         </div>
                                         <div class="ml-4 flex-shrink-0">
-                                          <a :href="`http://localhost:8080/files/` + file.file"  target="_blank" class="font-medium text-indigo-600 hover:text-indigo-500">
+                                          <a :href="process.env.siteURL + `files/` + file.file"  target="_blank" class="font-medium text-indigo-600 hover:text-indigo-500">
                                             İndir
                                           </a>
                                         </div>

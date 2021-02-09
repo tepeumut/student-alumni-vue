@@ -45,6 +45,22 @@
                           class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                   Anketler
                 </NuxtLink>
+                <NuxtLink to="/admin/users"
+                          class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  Kullanıcılar
+                </NuxtLink>
+                <NuxtLink to="/admin/teachers"
+                          class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  Öğretmenler
+                </NuxtLink>
+                <NuxtLink to="/admin/admins"
+                          class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  Yöneticiler
+                </NuxtLink>
+                <NuxtLink to="/admin/faculties"
+                          class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                  Fakülteler
+                </NuxtLink>
                 <NuxtLink to="/"
                           v-if="$auth.user.role === 'ADMIN'"
                           class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
@@ -62,7 +78,7 @@
                         id="user-menu" aria-haspopup="true">
                   <span class="sr-only">Open user menu</span>
                   <img class="h-8 w-8 rounded-full"
-                       :src="$auth.user.profileImage === null ? `https://via.placeholder.com/64` : $auth.user.profileImage"
+                       :src="$auth.user.profileImage === null ? `https://via.placeholder.com/64` : `${siteURL}files/` + $auth.user.profileImage"
                        alt="">
                 </button>
               </div>
@@ -74,11 +90,15 @@
                 leave-class="opacity-100 scale-100"
                 leave-to-class="opacity-0 scale-95"
               >
-                <div v-show="isShowProfile"
-                     class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-20"
-                     role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                  <a href="#" @click="logoutUser" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Çıkış Yap</a>
-                </div>
+                <<div v-show="isShowProfile"
+                      class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-20"
+                      role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+                <NuxtLink active-class="" exact-active-class="" to="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                  Profil</NuxtLink>
+                <NuxtLink active-class="" exact-active-class="" to="/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          role="menuitem">Ayarlar</NuxtLink>
+                <a href="#" @click="logoutUser" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Çıkış Yap</a>
+              </div>
               </transition>
             </div>
           </div>
@@ -91,10 +111,39 @@
         Menu open: "block", Menu closed: "hidden"
       -->
       <div :class="openMobileMenu ? 'block' : 'hidden'" class="sm:hidden">
-        <div class="px-2 pt-2 pb-3 space-y-1">
-          <NuxtLink to="/" exact
+        <div class="px-2 pt-2 pb-3 space-y-1 flex flex-col">
+          <NuxtLink to="/admin/jobs"
                     class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-            Panel
+            İşler
+          </NuxtLink>
+          <NuxtLink to="/admin/job-categories"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+            İş Kategoriler
+          </NuxtLink>
+          <NuxtLink to="/admin/surveys"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+            Anketler
+          </NuxtLink>
+          <NuxtLink to="/admin/users"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+            Kullanıcılar
+          </NuxtLink>
+          <NuxtLink to="/admin/teachers"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+            Öğretmenler
+          </NuxtLink>
+          <NuxtLink to="/admin/admins"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+            Yöneticiler
+          </NuxtLink>
+          <NuxtLink to="/admin/faculties"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+            Fakülteler
+          </NuxtLink>
+          <NuxtLink to="/"
+                    v-if="$auth.user.role === 'ADMIN'"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+            Site
           </NuxtLink>
         </div>
       </div>
@@ -106,7 +155,8 @@
 export default {
   data: () => ({
     isShowProfile: false,
-    openMobileMenu: false
+    openMobileMenu: false,
+    siteURL: process.env.siteURL,
   }),
   methods: {
     async logoutUser() {

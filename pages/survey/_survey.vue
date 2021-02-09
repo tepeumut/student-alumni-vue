@@ -16,9 +16,9 @@
               aria-valuemin="0"
               aria-valuemax="100"
             >
-        <span class="flex items-center h-full">
-            <slot></slot>
-        </span>
+              <span class="flex items-center h-full">
+                <slot></slot>
+              </span>
             </div>
           </div>
         </div>
@@ -96,12 +96,12 @@
                  stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
-            Previous
+            Önceki
           </button>
           <button @click="nextQuestion()" type="button"
                   :class="{'opacity-50': currentQuestion+1 > questions.length, 'cursor-not-allowed': currentQuestion+1 > questions.length}"
                   class="inline-flex justify-between items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-            {{ currentQuestion + 1 >= questions.length ? "Finish" : "Next" }}
+            {{ currentQuestion + 1 >= questions.length ? "Bitir" : "Sonraki" }}
             <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                  stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -124,9 +124,14 @@ export default {
     question: {},
     answerCheckbox: [],
     answerRadio: "",
-
   }),
   methods: {
+    calcPercent() {
+      let total = this.questions.length;
+      let current = this.currentQuestion;
+      let percent = current * 100 / total;
+      this.percent = percent.toFixed(0);
+    },
     nextQuestion() {
       this.updateAnswer();
       this.currentQuestion++;
@@ -164,6 +169,7 @@ export default {
       this.getAnswer();
     },
     getAnswer() {
+      this.calcPercent();
       let surveyId = this.$route.params.survey;
       this.$axios.get("/surveys/questions/" + this.question.id + "/answers")
         .then(res => {

@@ -106,13 +106,13 @@
                                   <div class="grid grid-cols-6 gap-6" v-for="(qData, index) in questionData">
                                     <div class="col-span-6 sm:col-span-2">
                                       <label class="block text-sm font-medium text-gray-700">{{ index + 1 }}.
-                                        Seçenek Değeri</label>
+                                        Seçenek </label>
                                       <input type="text" name="name" v-model="qData.name"
                                              class="border mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                     </div>
                                     <div class="col-span-6 sm:col-span-2">
                                       <label class="block text-sm font-medium text-gray-700">{{ index + 1 }}.
-                                        Seçenek</label>
+                                        Seçenek Değeri</label>
                                       <input type="text" name="name" v-model="qData.value"
                                              class="border mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                     </div>

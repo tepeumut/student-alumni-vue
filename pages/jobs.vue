@@ -68,8 +68,8 @@
                       </div>
                       <div class="flex flex-col" v-else>
                         <div class="flex flex-row mb-5 items-center">
-                          <img class="h-8 h-8 rounded-lg"
-                               :src="selectedJob.user.profileImage === null ? `https://via.placeholder.com/64` : selectedJob.user.profileImage"
+                          <img class="h-8 h-8 rounded-full"
+                               :src="selectedJob.user.profileImage === null ? `https://via.placeholder.com/64` : `${siteURL}files/` + selectedJob.user.profileImage"
                                alt="">
                           <span class="font-medium pl-5">{{
                               selectedJob.user.name + " " + selectedJob.user.lastName
@@ -220,7 +220,8 @@
                                           <label for="file-upload"
                                                  class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
                                             <span>Dosya seçin</span>
-                                            <input @change="addFile" ref="inputFile" id="file-upload" name="file-upload" type="file"
+                                            <input @change="addFile" ref="inputFile" id="file-upload" name="file-upload"
+                                                   type="file"
                                                    class="sr-only">
                                           </label>
                                           <p class="pl-1">veya sürükleyip bırakın</p>
@@ -460,12 +461,12 @@
             <hr class="my-5">
             <div class="flex flex-col">
               <p class="text-gray-500">{{ job.short_description }}</p>
-              <div class="flex flex-row mt-5 items-center">
-                <img class="h-8 h-8 rounded-lg"
-                     :src="job.user.profileImage === null ? `https://via.placeholder.com/64` : job.user.profileImage"
+              <NuxtLink :to="`/users/`+job.user.username" class="flex flex-row mt-5 items-center">
+                <img class="h-10 h-10 rounded-full"
+                     :src="job.user.profileImage === null ? `https://via.placeholder.com/64` : `${siteURL}files/` + job.user.profileImage"
                      alt="">
                 <span class="font-medium pl-5">{{ job.user.name + " " + job.user.lastName }}</span>
-              </div>
+              </NuxtLink>
               <button type="button"
                       @click="isOpenDialog = true; selectedJob = job"
                       class="inline-flex justify-center mt-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -480,6 +481,7 @@
 </template>
 <script>
 import JobAdd from "@/components/JobAdd";
+
 export default {
   components: {
     JobAdd
@@ -509,6 +511,7 @@ export default {
       {id: 55, name: "INTERN", value: "Stajyer"},
     ],
     inputFile: "",
+    siteURL: process.env.siteURL
   }),
   computed: {
     filterJobs() {
@@ -530,7 +533,6 @@ export default {
       return typeof jobType !== 'undefined' ? jobType.value : "-";
     },
     addFile(e) {
-      console.log("saddsasda");
       let droppedFiles;
       if (typeof e.target.files !== 'undefined') {
         droppedFiles = e.target.files;
@@ -571,7 +573,7 @@ export default {
         formData.append("files", f);
       });
       formData.append("about", this.applyFormAbout);
-      this.$axios.post("/jobs/"+this.selectedJob.id+"/apply-forms", formData, {}).then(res => {
+      this.$axios.post("/jobs/" + this.selectedJob.id + "/apply-forms", formData, {}).then(res => {
         this.$toasted.success("Başvurunuz başarıyla alındı", {
           theme: "toasted-primary",
           position: "top-center",

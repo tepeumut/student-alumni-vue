@@ -30,7 +30,7 @@
               <div class="relative w-screen max-w-5xl">
                 <div class="absolute top-0 left-0 -ml-8 pt-4 pr-2 flex sm:-ml-10 sm:pr-4">
                   <button
-                    @click="changeAddForm"
+                    @click="changeJobAddForm"
                     class="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
                     <span class="sr-only">Close panel</span>
                     <!-- Heroicon name: x -->
@@ -44,7 +44,7 @@
                   <div class="px-4 sm:px-6  md:px-12 flex flex-row justify-between items-center">
                     <div class="flex flex-col">
                       <h2 id="slide-over-heading-2" class="text-xl font-medium text-gray-900 mb-2">
-                        Yeni İş Kategori Ekle
+                        Yeni İş Deneyimi Ekle
                       </h2>
                     </div>
                     <div class="flex">
@@ -53,11 +53,15 @@
                   <hr class="mt-8">
                   <div class="mt-6 relative flex-1 px-4 md:px-12 sm:px-6 z-30">
                     <!-- Replace with your content -->
+                    <div class="animate-pulse flex flex-col space-y-4" v-if="dialogLoading">
+                      <div v-for="i in 15" class="h-4 bg-gray-400 rounded"
+                           :style="`width: ${Math.random()*100}%`"></div>
+                    </div>
                     <div>
                       <div class="md:grid md:grid-cols-3 md:gap-6">
                         <div class="md:col-span-1">
                           <div class="px-4 sm:px-0">
-                            <h3 class="text-lg font-medium leading-6 text-gray-900">İş Kategori Ekleyin</h3>
+                            <h3 class="text-lg font-medium leading-6 text-gray-900">İş Deneyimi Ekleyin</h3>
                           </div>
                         </div>
                         <div class="mt-5 md:mt-0 md:col-span-2">
@@ -74,15 +78,49 @@
                                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                                     </svg>
                                   </span>
-                                  <span class="inline-block align-middle mr-8">
+                                                          <span class="inline-block align-middle mr-8">
                                     <b class="capitalize">Hata</b> {{ formError.field + " " + formError.message }}
                                   </span>
                                 </div>
                                 <div class="grid grid-cols-6 gap-6">
                                   <div class="col-span-6 sm:col-span-3">
-                                    <label for="name" class="block text-sm font-medium text-gray-700">Ad</label>
-                                    <input type="text" name="name" id="name" v-model="job_category.name"
+                                    <label for="name" class="block text-sm font-medium text-gray-700">Firma Ad</label>
+                                    <input type="text" name="name" id="name" v-model="job.name"
                                            class="border mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                  </div>
+
+
+                                  <div class="col-span-6 sm:col-span-3">
+                                    <label for="offer_salary"
+                                           class="block text-sm font-medium text-gray-700">Pozisyon</label>
+                                    <input type="text" name="offer_salary" id="offer_salary" v-model="job.position"
+                                           autocomplete="email"
+                                           class="border mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                  </div>
+
+                                  <div class="col-span-6">
+                                    <label for="offer_salary"
+                                           class="block text-sm font-medium text-gray-700">Başlangıç Tarihi</label>
+                                    <datepicker placeholder="Başlangıç Tarihi" :language="datePickerLang" v-model="job.startDate"
+                                           class="border mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
+                                  </div>
+
+                                  <div class="col-span-6">
+                                    <label for="offer_salary"
+                                           class="block text-sm font-medium text-gray-700">Bitiş Tarihi</label>
+                                    <datepicker placeholder="Bitiş Tarihi" :language="datePickerLang" v-model="job.endDate"
+                                                class="border mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"/>
+                                  </div>
+
+                                  <div class="col-span-6">
+                                    <label for="about2" class="block text-sm font-medium text-gray-700">
+                                      Kısa Açıklama
+                                    </label>
+                                    <div class="mt-1">
+                                      <textarea id="about2" name="about" rows="6"
+                                                v-model="job.description"
+                                                class="border shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"></textarea>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -117,27 +155,33 @@
 </template>
 
 <script>
+import Datepicker from 'vuejs-datepicker';
+import {tr} from 'vuejs-datepicker/dist/locale'
 export default {
-  name: "JobCategoryAdd",
+  name: "UserJobAdd",
   props: {
     open: Boolean
+  },
+  components: {
+    Datepicker
   },
   data: () => ({
     dialogLoading: false,
     loginLoading: false,
-    job_category: {},
+    job: {},
     formErrors: [],
+    datePickerLang: tr,
   }),
   methods: {
-    changeAddForm() {
-      this.$emit('changeJobAddForm');
+    changeJobAddForm() {
+      this.$emit('changeUserJobAddForm');
     },
     handleAddForm() {
       this.formErrors = [];
       this.loginLoading = true;
-      this.$axios.post("/job-categories", this.job_category).then(res => {
+      this.$axios.post("/user-jobs", this.job).then(res => {
         this.loginLoading = false;
-        this.changeAddForm();
+        this.changeJobAddForm();
         this.$toasted.success("Başarıyla eklendi", {
           theme: "toasted-primary",
           position: "top-center",
@@ -145,7 +189,7 @@ export default {
           iconPack: "material",
           duration: 5000
         });
-        this.$emit('refreshJobCategories');
+        this.$emit('refreshUserJobs');
       }).catch(err => {
         this.loginLoading = false;
         this.formErrors = [];
@@ -194,7 +238,20 @@ export default {
           }, 500);
         }
       })
-    },
+    }
+  },
+  created() {
+    this.$axios.get("/job-categories").then(res => {
+      this.jobCategories = res.data;
+    }).catch(err => {
+      this.$toasted.error(err.response.data.message, {
+        theme: "toasted-primary",
+        position: "top-center",
+        icon: 'warning',
+        iconPack: "material",
+        duration: 5000
+      });
+    });
   }
 }
 </script>
