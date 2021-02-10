@@ -42,7 +42,7 @@
 <script>
 export default {
   layout: "login",
-  name: "email_code.vue",
+  name: "email_code",
   auth: false,
   data: () => ({
     formError: {
@@ -57,7 +57,7 @@ export default {
         iconPack: "material",
         duration: 5000
       });
-      this.$router.push("/login");
+      this.$router.push("/");
     }).catch(err => {
       let message;
       if (typeof err.response.data.apierror !== 'undefined') {

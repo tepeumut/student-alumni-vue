@@ -201,8 +201,12 @@ export default {
     getPercents() {
       this.$axios.get(`/surveys/questions/${this.questionId}/percents`).then(res => {
         this.percents = res.data;
+        let percentTotal = 0;
+        for (let k of Object.keys(this.percents)) {
+          percentTotal += this.percents[k];
+        }
         this.questionData.forEach(e => {
-          e.percent = Math.round(this.percents[e.value] / this.questionData.length*100);
+          e.percent = Math.round((this.percents[e.value] / percentTotal)*100);
           e.answerCount = this.percents[e.value];
           e.value = 0;
         });

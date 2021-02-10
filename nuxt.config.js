@@ -56,12 +56,12 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    baseURL: "http://localhost:8080/"
+    baseURL: "https://student-alumni-spring.herokuapp.com/"
   },
 
   // Env
   env: {
-    siteURL: "http://localhost:8080/"
+    siteURL: "https://student-alumni-spring.herokuapp.com/"
   },
 
   // Router
